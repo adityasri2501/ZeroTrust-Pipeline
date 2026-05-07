@@ -9,7 +9,7 @@ import java.sql.*;
 public class LoginController {
 
     // Hardcoded secret (for Gitleaks)
-    String API_KEY = "AIzaSyCyH61JJmcY5pHd-Aw88zZsO3nt0IBZUdk";
+    String API_KEY = System.getenv("API_KEY");
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
