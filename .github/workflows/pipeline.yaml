@@ -1,0 +1,22 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: code lana
+        uses: actions/checkout@v3
+
+      - name: setup environment
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: build project
+        run: mvn clean install
+
+      - name: gitleaks scanning
+        uses: gitleaks/gitleaks-action@v2
