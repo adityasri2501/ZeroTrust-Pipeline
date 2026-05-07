@@ -19,20 +19,22 @@ public class LoginController {
         try {
             Connection conn = DBUtil.getConnection();
 
-            // SQL Injection Vulnerability
-            String query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";
+            String query = "SELECT * FROM users WHERE username=? AND password=?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
 
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return "Login Success";
             } else {
-                return "Login Failed";
-            }
-
-        } catch (Exception e) {
-            return "Error";
+              return "Login Failed";
         }
+
+       } catch (Exception e) {
+            return "Error";
+       }
     }
 }
