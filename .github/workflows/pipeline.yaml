@@ -18,5 +18,19 @@ jobs:
       - name: build project
         run: mvn clean install
 
+      - name: sonar scanning
+        run: |
+          mvn sonar:sonar \
+          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+          -Dsonar.organization=${{ secrets.SONAR_ORG }} \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+      - name: sonar quality gate
+        uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: gitleaks scanning
         uses: gitleaks/gitleaks-action@v2
