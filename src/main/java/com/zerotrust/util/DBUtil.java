@@ -7,14 +7,19 @@ import java.sql.Statement;
 public class DBUtil {
 
     public static Connection getConnection() throws Exception {
+
         Connection conn = DriverManager.getConnection(
                 "jdbc:h2:mem:testdb", "sa", ""
         );
 
-        Statement stmt = conn.createStatement();
+        // FIX: try-with-resources (no leak)
+        try (Statement stmt = conn.createStatement()) {
 
-        stmt.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(50), password VARCHAR(50))");
-        stmt.execute("INSERT INTO users VALUES ('admin','1234')");
+            stmt.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(50), password VARCHAR(50))");
+
+            // avoid duplicate inserts
+            stmt.execute("MERGE INTO users KEY(username) VALUES ('admin','1234')");
+        }
 
         return conn;
     }

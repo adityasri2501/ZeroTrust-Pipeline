@@ -16,25 +16,22 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
 
-        try {
-            Connection conn = DBUtil.getConnection();
-
-            String query = "SELECT * FROM users WHERE username=? AND password=?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
+        try (Connection conn = DBUtil.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(
+            "SELECT * FROM users WHERE username=? AND password=?")) {
 
             pstmt.setString(1, username);
             pstmt.setString(2, password);
 
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return "Login Success";
-            } else {
-              return "Login Failed";
-        }
-
-       } catch (Exception e) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return "Login Success";
+                } else {
+            return "Login Failed";
+            }
+        } catch (SQLException e) {
             return "Error";
-       }
+        }
     }
+}
 }
