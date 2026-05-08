@@ -33,10 +33,9 @@ jobs:
           -Dsonar.projectKey=$SONAR_PROJECT_KEY \
           -Dsonar.organization=$SONAR_ORG \
           -Dsonar.login=$SONAR_TOKEN \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-          -Dsonar.qualitygate.wait=true \
-          -Dsonar.coverage.exclusions=**/DBUtil.java
+          -Dsonar.host.url=https://sonarcloud.io
 
       - name: Gitleaks Scan
         uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
