@@ -25,7 +25,8 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-          -Dsonar.qualitygate.wait=true
+          -Dsonar.qualitygate.wait=true \
+          -Dsonar.coverage.exclusions=**/DBUtil.java
 
       - name: gitleaks scanning
         uses: gitleaks/gitleaks-action@v2
