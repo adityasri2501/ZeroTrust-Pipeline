@@ -9,10 +9,10 @@ public class DBUtil {
     public static Connection getConnection() throws Exception {
 
         Connection conn = DriverManager.getConnection(
-                "jdbc:h2:mem:testdb", "sa", ""
+                "jdbc:h2:mem:testdb", "sa", "secure123"
         );
 
-        // FIX: try-with-resources (no leak)
+        // try-with-resources (no leak)
         try (Statement stmt = conn.createStatement()) {
 
             stmt.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(50), password VARCHAR(50))");
