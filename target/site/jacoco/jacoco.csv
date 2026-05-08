@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+zero-trust-pipeline,com.zerotrust.controller,LoginController,9,43,4,4,3,11,4,2,0,2
+zero-trust-pipeline,com.zerotrust,ZeroTrustApplication,8,0,0,0,3,0,2,0,2,0
+zero-trust-pipeline,com.zerotrust.util,DBUtil,0,21,0,0,0,6,0,1,0,1
