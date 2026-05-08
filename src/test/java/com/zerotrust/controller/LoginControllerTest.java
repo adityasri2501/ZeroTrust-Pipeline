@@ -5,22 +5,29 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginControllerTest {
 
+    // Constants (Sonar clean + maintainable)
+    private static final String SUCCESS = "Login Success";
+    private static final String INVALID_CREDENTIALS = "Invalid Credentials";
+    private static final String VALID_USER = "admin";
+    private static final String VALID_PASS = "1234";
+    private static final String INVALID = "wrong";
+
     @Test
     void testLoginSuccess() {
         LoginController controller = new LoginController();
 
-        String result = controller.login("admin", "1234");
+        String result = controller.login(VALID_USER, VALID_PASS);
 
-        assertEquals("Login Success", result);  // adjust if needed
+        assertEquals(SUCCESS, result);
     }
 
     @Test
-    void testLoginInvalid() {
+    void testLoginInvalidCredentials() {
         LoginController controller = new LoginController();
 
-        String result = controller.login("wrong", "wrong");
+        String result = controller.login(INVALID, INVALID);
 
-        assertNotEquals("Login Success", result);
+        assertEquals(INVALID_CREDENTIALS, result);
     }
 
     @Test
@@ -29,7 +36,7 @@ public class LoginControllerTest {
 
         String result = controller.login("", "");
 
-        assertNotNull(result);
+        assertEquals(INVALID_CREDENTIALS, result);
     }
 
     @Test
@@ -38,6 +45,24 @@ public class LoginControllerTest {
 
         String result = controller.login(null, null);
 
-        assertNotNull(result);
+        assertEquals(INVALID_CREDENTIALS, result);
+    }
+
+    @Test
+    void testLoginPartialCorrect() {
+        LoginController controller = new LoginController();
+
+        String result = controller.login(VALID_USER, INVALID);
+
+        assertEquals(INVALID_CREDENTIALS, result);
+    }
+
+    @Test
+    void testLoginCaseSensitivity() {
+        LoginController controller = new LoginController();
+
+        String result = controller.login("ADMIN", VALID_PASS);
+
+        assertEquals(INVALID_CREDENTIALS, result);
     }
 }
