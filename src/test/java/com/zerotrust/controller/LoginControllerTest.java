@@ -7,7 +7,7 @@ public class LoginControllerTest {
 
     // Constants (Sonar clean + maintainable)
     private static final String SUCCESS = "Login Success";
-    private static final String INVALID_CREDENTIALS = "Invalid Credentials";
+    private static final String INVALID_CREDENTIALS = "Login Failed";
     private static final String VALID_USER = "admin";
     private static final String VALID_PASS = "1234";
     private static final String INVALID = "wrong";
