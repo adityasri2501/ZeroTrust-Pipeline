@@ -61,11 +61,20 @@ public class LoginControllerTest {
         assertEquals(FAILED, controller.login(" ", " "));
     }
 
-    // 🔥 THIS IS CRITICAL (forces actual method execution path)
+    // THIS IS CRITICAL (forces actual method execution path)
     @Test
     void testRealExecutionPath() {
         LoginController real = new LoginController();
         String result = real.login("random", "random");
+        assertNotNull(result);
+    }
+
+    @Test
+    void testLoginWithSpecialChars() {
+        LoginController localcontroller = new LoginController();
+
+        String result = localcontroller.login("!@#", "$$$");
+
         assertNotNull(result);
     }
 }
