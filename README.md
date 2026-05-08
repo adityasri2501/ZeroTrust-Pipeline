@@ -23,3 +23,9 @@ Add above line to check git leaks in D:\ZeroTrust Pipeline\src\main\java\com\zer
         }
 
 add above in D:\ZeroTrust Pipeline\src\main\java\com\zerotrust\controller\LoginController.java fo sql injection to verify that the workflow is running
+
+Connection conn = DriverManager.getConnection(
+                "jdbc:h2:mem:testdb", "sa", "secure123"
+        );
+
+add above in D:\ZeroTrust Pipeline\src\main\java\com\zerotrust\util\DBUtil.java for blocker and pipeline fails

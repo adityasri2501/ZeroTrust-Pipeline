@@ -8,8 +8,10 @@ public class DBUtil {
 
     public static Connection getConnection() throws Exception {
 
+        String dbPassword = System.getenv("DB_PASSWORD");
+
         Connection conn = DriverManager.getConnection(
-                "jdbc:h2:mem:testdb", "sa", "secure123"
+            "jdbc:h2:mem:testdb", "sa", dbPassword
         );
 
         // try-with-resources (no leak)
