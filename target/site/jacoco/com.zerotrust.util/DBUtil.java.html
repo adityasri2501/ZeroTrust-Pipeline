@@ -11,20 +11,20 @@ public class DBUtil {
 
     public static Connection getConnection() throws SQLException {
 
-<span class="fc" id="L14">        String dbPassword = System.getenv(&quot;DB_PASSWORD&quot;);</span>
+<span class="nc" id="L14">        String dbPassword = System.getenv(&quot;DB_PASSWORD&quot;);</span>
 
-<span class="fc" id="L16">        Connection conn = DriverManager.getConnection(</span>
+<span class="nc" id="L16">        Connection conn = DriverManager.getConnection(</span>
                 &quot;jdbc:h2:mem:testdb&quot;, &quot;sa&quot;, dbPassword
         );
 
-<span class="fc" id="L20">        try (Statement stmt = conn.createStatement()) {</span>
+<span class="nc" id="L20">        try (Statement stmt = conn.createStatement()) {</span>
 
-<span class="fc" id="L22">            stmt.execute(&quot;CREATE TABLE IF NOT EXISTS users (username VARCHAR(50), password VARCHAR(50))&quot;);</span>
+<span class="nc" id="L22">            stmt.execute(&quot;CREATE TABLE IF NOT EXISTS users (username VARCHAR(50), password VARCHAR(50))&quot;);</span>
 
-<span class="fc" id="L24">            stmt.execute(&quot;MERGE INTO users KEY(username) VALUES ('admin','1234')&quot;);</span>
+<span class="nc" id="L24">            stmt.execute(&quot;MERGE INTO users KEY(username) VALUES ('admin','1234')&quot;);</span>
         }
 
-<span class="fc" id="L27">        return conn;</span>
+<span class="nc" id="L27">        return conn;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

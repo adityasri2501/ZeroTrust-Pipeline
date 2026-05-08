@@ -8,30 +8,34 @@ import java.sql.*;
 @RestController
 <span class="fc" id="L9">public class LoginController {</span>
 
-<span class="fc" id="L11">    String apiKey = System.getenv(&quot;API_KEY&quot;);</span>
-
     @PostMapping(&quot;/login&quot;)
-    public String login(@RequestParam String username, @RequestParam String password) {
+    public String login(@RequestParam String username, @RequestParam String pass) {
 
-<span class="fc" id="L16">        try (Connection conn = DBUtil.getConnection();</span>
-<span class="fc" id="L17">     PreparedStatement pstmt = conn.prepareStatement(</span>
-             &quot;SELECT username, password FROM users WHERE username=? AND password=?&quot;)) {
-
-<span class="fc" id="L20">    pstmt.setString(1, username);</span>
-<span class="fc" id="L21">    pstmt.setString(2, password);</span>
-
-<span class="fc" id="L23">    try (ResultSet rs = pstmt.executeQuery()) {</span>
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (rs.next()) {</span>
-<span class="fc" id="L25">            return &quot;Login Success&quot;;</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">        if (isValidUser(username, pass)) {</span>
+<span class="fc" id="L15">            return &quot;Login Success&quot;;</span>
         } else {
-<span class="fc" id="L27">            return &quot;Login Failed&quot;;</span>
+<span class="fc" id="L17">            return &quot;Login Failed&quot;;</span>
         }
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">    }</span>
+    }
 
-<span class="pc bpc" id="L31" title="2 of 4 branches missed.">} catch (SQLException e) {</span>
-<span class="nc" id="L32">    e.printStackTrace();</span>
-<span class="nc" id="L33">    return &quot;Error&quot;;</span>
-}
+    // Extracted logic (testable)
+    boolean isValidUser(String username, String pass) {
+
+<span class="nc" id="L24">        try (Connection conn = DBUtil.getConnection();</span>
+<span class="nc" id="L25">             PreparedStatement pstmt = conn.prepareStatement(</span>
+                     &quot;SELECT username, password FROM users WHERE username=? AND password=?&quot;)) {
+
+<span class="nc" id="L28">            pstmt.setString(1, username);</span>
+<span class="nc" id="L29">            pstmt.setString(2, pass);</span>
+
+<span class="nc" id="L31">            try (ResultSet rs = pstmt.executeQuery()) {</span>
+<span class="nc" id="L32">                return rs.next();</span>
+            }
+
+<span class="nc" id="L35">        } catch (SQLException e) {</span>
+<span class="nc" id="L36">            e.printStackTrace();</span>
+<span class="nc" id="L37">            return false;</span>
+        }
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
