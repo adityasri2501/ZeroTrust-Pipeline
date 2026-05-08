@@ -6,20 +6,20 @@ import java.sql.Statement;
 
 public class DBUtil {
 
+    private DBUtil() {}  // add this
+
     public static Connection getConnection() throws Exception {
 
         String dbPassword = System.getenv("DB_PASSWORD");
 
         Connection conn = DriverManager.getConnection(
-            "jdbc:h2:mem:testdb", "sa", dbPassword
+                "jdbc:h2:mem:testdb", "sa", dbPassword
         );
 
-        // try-with-resources (no leak)
         try (Statement stmt = conn.createStatement()) {
 
             stmt.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(50), password VARCHAR(50))");
 
-            // avoid duplicate inserts
             stmt.execute("MERGE INTO users KEY(username) VALUES ('admin','1234')");
         }
 
