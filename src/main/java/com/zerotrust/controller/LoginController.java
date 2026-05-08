@@ -8,7 +8,7 @@ import java.sql.*;
 @RestController
 public class LoginController {
 
-    String API_KEY = System.getenv("API_KEY");
+    String apiKey = System.getenv("API_KEY");
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
