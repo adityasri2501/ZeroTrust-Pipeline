@@ -63,10 +63,10 @@
       </goals>
     </execution>
 
-    <!-- FORCE report generation -->
+    <!-- Correct report phase -->
     <execution>
       <id>report</id>
-      <phase>test</phase>   <!-- CHANGE THIS -->
+      <phase>verify</phase>  <!-- FIXED -->
       <goals>
         <goal>report</goal>
       </goals>
