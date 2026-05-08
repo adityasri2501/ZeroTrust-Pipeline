@@ -18,7 +18,7 @@ public class LoginController {
         }
     }
 
-    // Extracted logic (testable)
+    // 🔥 Extracted DB logic
     boolean isValidUser(String username, String pass) {
 
         try (Connection conn = DBUtil.getConnection();
