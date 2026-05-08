@@ -8,7 +8,7 @@ public class DBUtil {
 
     private DBUtil() {}  // add this
 
-    public static Connection getConnection() throws Exception {
+    public static Connection getConnection() throws SQLException {
 
         String dbPassword = System.getenv("DB_PASSWORD");
 
