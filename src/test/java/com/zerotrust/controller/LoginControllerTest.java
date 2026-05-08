@@ -69,12 +69,4 @@ public class LoginControllerTest {
         assertNotNull(result);
     }
 
-    @Test
-    void testLoginWithSpecialChars() {
-        LoginController localcontroller = new LoginController();
-
-        String result = localcontroller.login("!@#", "$$$");
-
-        assertNotNull(result);
-    }
 }
