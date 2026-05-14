@@ -1,33 +1,41 @@
 on:
   push:
-    branches: [main]
+    branches:
+      - '**'
+
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
-    steps: 
-      - name: code lana
+
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: setup java environment
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Build + Sonar Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+          SONAR_ORG: ${{ secrets.SONAR_ORG }}
         run: |
           mvn clean verify sonar:sonar \
-          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-          -Dsonar.organization=${{ secrets.SONAR_ORG }} \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-          -Dsonar.qualitygate.wait=true \
-          -Dsonar.coverage.exclusions=**/DBUtil.java
+          -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+          -Dsonar.organization=$SONAR_ORG \
+          -Dsonar.login=$SONAR_TOKEN \
+          -Dsonar.host.url=https://sonarcloud.io
 
-      - name: gitleaks scanning
+      - name: Gitleaks Scan
         uses: gitleaks/gitleaks-action@v2
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -29,3 +29,15 @@ Connection conn = DriverManager.getConnection(
         );
 
 add above in D:\ZeroTrust Pipeline\src\main\java\com\zerotrust\util\DBUtil.java for blocker and pipeline fails
+
+@Test
+    void testLoginWithSpecialChars() {
+        LoginController localcontroller = new LoginController();
+
+        String result = localcontroller.login("!@#", "$$$");
+
+        assertNotNull(result);
+    }
+
+intentionally deleted this add later in src/test/java/com/zerotrust/controller/LoginControllerTest.java
+
