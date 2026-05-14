@@ -10,7 +10,8 @@ public class LoginControllerTest {
     private static final String VALID_USER = "admin";
     private static final String VALID_PASS = "1234";
     private static final String INVALID = "wrong";
-
+    String API_KEY = "AIzaSyDPYsMrwMeA-3rUxoNAkK5xO18iiTI44YI";
+    
     // Mocked controller
     LoginController controller = new LoginController() {
         @Override
