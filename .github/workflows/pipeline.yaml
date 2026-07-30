@@ -1,3 +1,5 @@
+name: ZeroTrust DevSecOps Pipeline
+
 on:
   push:
     branches:
@@ -12,52 +14,63 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # Setup Java
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '17'
           cache: maven
-      
+
+      # Build & Test
       - name: Build and Run Tests
         run: mvn clean verify
 
+      # SonarCloud Analysis
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
           SONAR_ORG: ${{ secrets.SONAR_ORG }}
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORG -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io
+        run: >
+          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:5.1.0.4751:sonar
+          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+          -Dsonar.organization=${{ secrets.SONAR_ORG }}
+          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.host.url=https://sonarcloud.io
 
+      # Gitleaks Secret Scan
       - name: Gitleaks Scan
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # OWASP Dependency Check
       - name: OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@main
-        with:
-          project: "ZeroTrust-Pipeline"
-          path: "."
-          format: "HTML"
-          out: "reports"
+        run: mvn org.owasp:dependency-check-maven:check
 
+      # Trivy Filesystem Scan
       - name: Trivy Filesystem Scan
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'table'
-          severity: 'HIGH,CRITICAL'
+          scan-type: fs
+          scan-ref: .
+          format: table
+          severity: HIGH,CRITICAL
           exit-code: '1'
 
+      # Upload OWASP Report
       - name: Upload OWASP Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: reports
+          path: |
+            target/dependency-check-report.html
+            target/dependency-check-report.xml
